@@ -1,0 +1,16 @@
+# Rewrite rules to support "pretty" routes under /tienda/
+# Enable mod_rewrite in Apache/WAMP and make sure AllowOverride is enabled for this folder
+Options +FollowSymLinks
+RewriteEngine On
+#RewriteBase /tienda/
+
+# If the requested filename or directory exists, serve it directly
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Otherwise send the full path as the `route` query parameter to index.php
+# Examples:
+#   /tienda/                 => index.php?route=
+#   /tienda/product/99/slug  => index.php?route=product/99/slug
+RewriteRule ^(.*)$ index.php?route=$1 [L,QSA]
